@@ -198,6 +198,31 @@ test("renders the table with  headers", async () => {
 // });
 
 test("renders correct data of rows", async () => {
+  const mockResponse = {
+    data: [
+      {
+        id: "1",
+        client: "Ayush Mavani",
+        invoiceDate: "2024-12-18T18:30:00.000Z",
+        invoiceNumber: "222211212121",
+        dueDate: "2024-12-27T18:30:00.000Z",
+      },
+      {
+        id: "2",
+        client: "Ayush Mavani",
+        invoiceDate: "2024-12-20T18:30:00.000Z",
+        invoiceNumber: "111111111111111",
+        dueDate: "2024-12-27T18:30:00.000Z",
+      },
+      {
+        id: "3",
+        client: "Ayush Mavani",
+        invoiceDate: "2024-12-22T18:30:00.000Z",
+        invoiceNumber: "9999999999",
+        dueDate: "2024-12-27T18:30:00.000Z",
+      },
+    ],
+  };
   mockAxios
     .onGet(
       "http://localhost:5000/invoice/userId?user_id=02efaa66-4a66-466f-b92b-24ce7366edf0"
