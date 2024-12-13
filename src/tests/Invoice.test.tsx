@@ -7,37 +7,99 @@ import axios from "axios";
 import { CookiesProvider } from "react-cookie";
 import MockAdapter from "axios-mock-adapter";
 import { within } from "@testing-library/react";
+import { Table } from "@mui/material";
 const mockAxios = new MockAdapter(axios);
 
 beforeEach(() => {
   mockAxios.resetHistory();
   mockAxios.reset();
 });
-// test("renders the table with  headers", async () => {
+test("renders the table with  headers", async () => {
+  render(
+    <BrowserRouter
+      future={{
+        v7_relativeSplatPath: true,
+        v7_startTransition: true,
+      }}
+    >
+      <Provider store={store}>
+        <InvoiceDashBoard />
+      </Provider>
+    </BrowserRouter>
+  );
+
+  const table = await screen.findByTestId("client-table");
+  expect(table).toBeInTheDocument();
+
+  const headers = table.querySelectorAll("th");
+  expect(headers).toHaveLength(5);
+
+  expect(headers[0].textContent).toBe("Client");
+  expect(headers[1].textContent).toBe("Invoice Date");
+  expect(headers[2].textContent).toBe("Invoice Number");
+  expect(headers[3].textContent).toBe("Due Date");
+  expect(headers[4].textContent).toBe("Action");
+});
+
+// test("renders correct data of rows", async () => {
+//   mockAxios
+//     .onGet(
+//       "http://localhost:5000/invoice/userId?user_id=02efaa66-4a66-466f-b92b-24ce7366edf0"
+//     )
+//     .reply(200, [
+//       {
+//         id: "1",
+//         client: "Ayush Mavani",
+//         invoiceDate: "2024-12-18T18:30:00.000Z",
+//         invoiceNumber: "222211212121",
+//         dueDate: "2024-12-27T18:30:00.000Z",
+//       },
+//       {
+//         id: "2",
+//         client: "Ayush Mavani",
+//         invoiceDate: "2024-12-20T18:30:00.000Z",
+//         invoiceNumber: "111111111111111",
+//         dueDate: "2024-12-27T18:30:00.000Z",
+//       },
+//       {
+//         id: "3",
+//         client: "Ayush Mavani",
+//         invoiceDate: "2024-12-22T18:30:00.000Z",
+//         invoiceNumber: "9999999999",
+//         dueDate: "2024-12-27T18:30:00.000Z",
+//       },
+//     ]);
+
 //   render(
-//     <BrowserRouter
-//       future={{
-//         v7_relativeSplatPath: true,
-//         v7_startTransition: true,
-//       }}
-//     >
+//     <BrowserRouter>
 //       <Provider store={store}>
 //         <InvoiceDashBoard />
 //       </Provider>
 //     </BrowserRouter>
 //   );
 
-//   const table = await screen.findByTestId("client-table");
-//   expect(table).toBeInTheDocument();
+//   const table = await screen.findByTestId("table");
+//   const rows = within(table).getAllByTestId("table-row");
+//   expect(rows).toHaveLength(3);
 
-//   const headers = table.querySelectorAll("th");
-//   expect(headers).toHaveLength(5);
+//   // Verify specific content in the rows
+//   const firstRowCells = within(rows[0]).getAllByRole("cell");
+//   expect(firstRowCells[0]).toHaveTextContent("Ayush Mavani");
+//   expect(firstRowCells[1]).toHaveTextContent("2024-12-18");
+//   expect(firstRowCells[2]).toHaveTextContent("222211212121");
+//   expect(firstRowCells[3]).toHaveTextContent("2024-12-27");
 
-//   expect(headers[0].textContent).toBe("Client");
-//   expect(headers[1].textContent).toBe("Invoice Date");
-//   expect(headers[2].textContent).toBe("Invoice Number");
-//   expect(headers[3].textContent).toBe("Due Date");
-//   expect(headers[4].textContent).toBe("Action");
+//   const secondRowCells = within(rows[1]).getAllByRole("cell");
+//   expect(secondRowCells[0]).toHaveTextContent("Ayush Mavani");
+//   expect(secondRowCells[1]).toHaveTextContent("2024-12-20");
+//   expect(secondRowCells[2]).toHaveTextContent("111111111111111");
+//   expect(secondRowCells[3]).toHaveTextContent("2024-12-27");
+
+//   const thirdRowCells = within(rows[2]).getAllByRole("cell");
+//   expect(thirdRowCells[0]).toHaveTextContent("Ayush Mavani");
+//   expect(thirdRowCells[1]).toHaveTextContent("2024-12-22");
+//   expect(thirdRowCells[2]).toHaveTextContent("9999999999");
+//   expect(thirdRowCells[3]).toHaveTextContent("2024-12-27");
 // });
 
 // test("renders correct number of rows ", async () => {
@@ -177,15 +239,15 @@ test("renders correct data of rows", async () => {
     </BrowserRouter>
   );
 
-  const table = await screen.findByTestId("table");
+  const table = screen.getAllByTestId("table");
   expect(table).toBeInTheDocument();
+  const rows = screen.getAllByTestId("table-row");
+  expect(rows).toHaveLength(3);
 
-  // const rows = table.querySelectorAll("tr");
+  // const rows = screen.getAllByTestId("table-row");
+
   // expect(rows).toHaveLength(3);
-
-  const rows = await waitFor(() => screen.getAllByRole("row"));
-
-  expect(rows).toHaveLength(1);
+  console.log(rows);
 
   expect(rows[0]).toHaveTextContent("Ayush Mavani");
   const firstRowCells = within(rows[0]).getAllByRole("cell");
